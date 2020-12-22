@@ -5,8 +5,10 @@ import * as fs from "fs";
 
 const youtube = google.youtube({
   version: "v3",
+  // Google APIs Explorer
   auth: "AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM",
   headers: {
+    // Google APIs Explorer
     "X-Origin": "https://explorer.apis.google.com",
   },
 });
