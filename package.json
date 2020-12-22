@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "googleapis": "^66.0.0"
+    "googleapis": "^66.0.0",
+    "p-limit": "^3.1.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.14",

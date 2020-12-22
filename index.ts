@@ -2,6 +2,8 @@ import { google, youtube_v3 } from "googleapis";
 import * as child_process from "child_process";
 import * as process from "process";
 import * as fs from "fs";
+import * as os from "os";
+import pLimit from "p-limit";
 
 const youtube = google.youtube({
   version: "v3",
@@ -51,17 +53,27 @@ const channelId = process.argv[2] || "";
     (playlistItem) => playlistItem.contentDetails?.videoId
   );
 
-  for (const videoId of videoIdList) {
-    const res = child_process
-      .execSync(
-        `youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -o 'output/%(title)s-%(id)s.%(ext)s' ${videoId}`
-      )
-      .toString("utf8");
-    console.log(res);
-  }
+  const limit = pLimit(os.cpus().length);
+  // const promises = videoIdList.map((videoId) => limit(() => download(videoId)));
+
+  // await Promise.all(promises);
 
   await fs.promises.writeFile(
     `output/${channelId}.json`,
-    JSON.stringify(playlistItemList, null, 2)
+    `${JSON.stringify(playlistItemList, null, 2)}\n`
   );
 })();
+
+async function download(videoId: string | null | undefined) {
+  const childProcess = child_process.spawn("youtube-dl", [
+    "-f",
+    "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+    "-o",
+    "output/%(title)s-%(id)s.%(ext)s",
+    `${videoId}`,
+  ]);
+
+  for await (const stdout of childProcess.stdout) {
+    console.log(stdout.toString("utf8"));
+  }
+}

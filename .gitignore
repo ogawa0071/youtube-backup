@@ -3,3 +3,4 @@ node_modules
 *.mp4.part
 *.m4a
 *.m4a.part
+*.json
