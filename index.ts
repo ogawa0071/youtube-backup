@@ -67,9 +67,9 @@ const channelId = process.argv[2] || "";
 async function download(videoId: string | null | undefined) {
   const childProcess = child_process.spawn("youtube-dl", [
     "-f",
-    "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+    "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4]/best",
     "-o",
-    "output/%(title)s-%(id)s.%(ext)s",
+    "output/%(id)s.%(ext)s",
     `${videoId}`,
   ]);
 
