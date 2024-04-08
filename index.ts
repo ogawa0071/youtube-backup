@@ -33,7 +33,13 @@ const channelId = process.argv[2] || "";
   do {
     const playlistItemListResponse = (
       await youtube.playlistItems.list({
-        part: ["id", "snippet", "contentDetails", "status"],
+        part: [
+          "id",
+          "snippet",
+          "contentDetails",
+          "status",
+          "liveStreamingDetails",
+        ],
         maxResults: 50,
         playlistId: uploadsPlaylist,
         pageToken: nextPageToken,
